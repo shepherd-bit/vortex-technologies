@@ -1,11 +1,14 @@
-import Navbar from './landing/Navbar';
-import Hero from './landing/Hero';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LandingPage from './landing/LandingPage';
+import AdminPage from './admin/AdminPage';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
-      <Navbar />
-      <Hero />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/admin" element={<AdminPage />} />
+      </Routes>
+    </Router>
   );
 }
