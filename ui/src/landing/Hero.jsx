@@ -50,8 +50,8 @@ export default function Hero() {
         {/* Center-Aligned Main Section with Flanking Floating Cards */}
         <div className="w-full relative flex flex-col items-center justify-center min-h-[380px] my-2">
           
-          {/* Left Side: Investor Memo Card (Locked Location) */}
-          <div className="lg:absolute lg:left-4 lg:top-4 z-30 mb-6 lg:mb-0">
+          {/* Left Side: Investor Memo Card & Second Slanted Drone Image Card */}
+          <div className="lg:absolute lg:left-4 lg:top-4 z-30 mb-6 lg:mb-0 flex flex-col items-start gap-4">
             {latestMemo && (
               <motion.div 
                 initial={{ opacity: 0, x: -30 }}
@@ -84,6 +84,29 @@ export default function Hero() {
                 </div>
               </motion.div>
             )}
+
+            {/* Additional Floating Drone Image Card below Investor Memo */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1, y: [6, -6, 6] }}
+              transition={{ 
+                opacity: { duration: 0.8, delay: 0.2 },
+                scale: { duration: 0.8, delay: 0.2 },
+                y: { repeat: Infinity, duration: 5.5, ease: "easeInOut" } 
+              }}
+              className="w-full max-w-[270px] pointer-events-none z-20 ml-4"
+            >
+              <div className="bg-[#F3EFE6] p-3 rounded-3xl shadow-xl border border-neutral-200/60 rotate-[3deg] transform pointer-events-auto">
+                <div className="flex justify-end mb-2">
+                  <span className="bg-black text-white text-[9px] tracking-widest px-2 py-0.5 rounded font-mono uppercase">
+                    Vortex X2 • Field
+                  </span>
+                </div>
+                <div className="w-full h-36 flex items-center justify-center rounded-2xl overflow-hidden border border-dashed border-neutral-300 bg-neutral-100/50">
+                  <img src="./dji-mini-3-gl.jpg" alt="Drone Custom Graphic" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            </motion.div>
           </div>
 
           {/* Right Side: Drone Image Card (Locked Location) */}
