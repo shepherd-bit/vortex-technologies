@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 export default function HeroAd() {
   const [quarter, setQuarter] = useState('Q2 2026');
@@ -101,7 +102,12 @@ export default function HeroAd() {
   };
 
   return (
-    <div className="w-full">
+    <motion.div 
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="w-full"
+    >
       <div className="flex items-center justify-between mb-4 text-xs font-mono text-neutral-400">
         <div className="flex items-center gap-2">
           <span className="text-neutral-900 font-bold uppercase tracking-wider">Hero</span>
@@ -110,7 +116,13 @@ export default function HeroAd() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-200 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+      <motion.form 
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+        onSubmit={handleSubmit} 
+        className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-200 grid grid-cols-1 md:grid-cols-12 gap-6 items-center"
+      >
         <div className="md:col-span-3 flex flex-col gap-1.5">
           <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Quarter</label>
           <input 
@@ -172,17 +184,21 @@ export default function HeroAd() {
             {isSubmitting ? 'Saving...' : isSaved ? 'Saved' : 'Save'}
           </button>
         </div>
-      </form>
+      </motion.form>
 
       {message && (
-        <div className="mt-3 text-xs font-mono text-neutral-600">
+        <motion.div 
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-3 text-xs font-mono text-neutral-600"
+        >
           {message}
-        </div>
+        </motion.div>
       )}
 
       <div className="mt-2 text-[11px] text-neutral-400">
         Top toolbar editor — content preview below stays empty.
       </div>
-    </div>
+    </motion.div>
   );
 }
