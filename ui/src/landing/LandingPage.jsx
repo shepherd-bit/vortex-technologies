@@ -2,8 +2,9 @@ import { useState } from 'react';
 import Navbar from './Navbar';
 import Hero from './Hero';
 import Stakeholders from './Stakeholders';
+import BlogCards from './BlogCards';
 
-export default function LandingPage() {
+export default function LandingPage({ onSelectBlog }) {
   const [activeFilter, setActiveFilter] = useState('all');
 
   return (
@@ -14,7 +15,10 @@ export default function LandingPage() {
         activeFilter={activeFilter} 
         setActiveFilter={setActiveFilter} 
       />
-      {/* Add other landing sections here later (BlogCards, Footer, etc.) */}
+      <BlogCards 
+        category={activeFilter}
+        onSelectBlog={onSelectBlog} 
+      />
     </div>
   );
 }
