@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function BlogCards({ category = 'all', onSelectBlog }) {
+    const navigate = useNavigate();
+    const handleSelect = onSelectBlog || ((id) => navigate(`/blog/${id}`));
+
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -37,7 +41,7 @@ export default function BlogCards({ category = 'all', onSelectBlog }) {
                     {/* Hero Card (Index 0) */}
                     {heroPost && (
                         <div 
-                            onClick={() => onSelectBlog(heroPost.id)}
+                            onClick={() => handleSelect(heroPost.id)}
                             className="bg-white border border-gray-200 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all cursor-pointer flex flex-col justify-between"
                         >
                             <div>
@@ -63,7 +67,7 @@ export default function BlogCards({ category = 'all', onSelectBlog }) {
                         {gridPosts.map(post => (
                             <div 
                                 key={post.id}
-                                onClick={() => onSelectBlog(post.id)}
+                                onClick={() => handleSelect(post.id)}
                                 className="bg-white border border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all cursor-pointer flex flex-col justify-between"
                             >
                                 <div>
