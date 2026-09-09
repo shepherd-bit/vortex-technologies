@@ -4,6 +4,9 @@ import { motion } from 'framer-motion';
 export default function BlogPageAd() {
     const [authorName, setAuthorName] = useState('Titus O.');
     const [authorTitle, setAuthorTitle] = useState('CEO, Vortex');
+    const [blogTitle, setBlogTitle] = useState('X1 Flight Logs & Thermal Data');
+    const [blogSubtitle, setBlogSubtitle] = useState('Marfa range campaign endurance metrics and reserve analysis.');
+    const [blogCategory, setBlogCategory] = useState('Public');
     
     const [tocItems, setTocItems] = useState([
         { id: 1, title: 'Flight Test Overview' },
@@ -42,6 +45,16 @@ Logs attached below for investors and regulators. Raw CSV included.`
     const [videoTitle, setVideoTitle] = useState('X1 Full Range Test — Marfa, TX');
     const [videos, setVideos] = useState([
         { id: 1, title: 'X1 Full Range Test — Marfa, TX', filename: 'x1-marfa-test-04.mp4' }
+    ]);
+
+    // Published blogs state
+    const [publishedBlogs, setPublishedBlogs] = useState([
+        {
+            id: 1,
+            title: 'X1 Flight Logs & Thermal Data',
+            subtitle: 'Marfa range campaign endurance metrics and reserve analysis.',
+            category: 'Public'
+        }
     ]);
 
     const handleTocChange = (id, newTitle) => {
@@ -95,6 +108,32 @@ Logs attached below for investors and regulators. Raw CSV included.`
         setVideos(videos.filter(v => v.id !== id));
     };
 
+    const handlePublish = () => {
+        if (!blogTitle) {
+            alert('Please provide a blog title.');
+            return;
+        }
+        const newBlog = {
+            id: Date.now(),
+            title: blogTitle,
+            subtitle: blogSubtitle || authorTitle,
+            category: blogCategory
+        };
+        setPublishedBlogs([...publishedBlogs, newBlog]);
+        alert('Blog post published successfully!');
+    };
+
+    const handleDeleteBlog = (id) => {
+        setPublishedBlogs(publishedBlogs.filter(blog => blog.id !== id));
+    };
+
+    const handleEditBlog = (blog) => {
+        setBlogTitle(blog.title);
+        setBlogSubtitle(blog.subtitle);
+        if (blog.category) setBlogCategory(blog.category);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     return (
         <motion.div 
             initial={{ opacity: 0, y: 15 }}
@@ -102,6 +141,53 @@ Logs attached below for investors and regulators. Raw CSV included.`
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
             className="w-full space-y-6"
         >
+            {/* Metadata / Titles Section */}
+            <div>
+                <div className="flex items-center justify-between mb-4 text-xs font-mono text-neutral-400">
+                    <div className="flex items-center gap-2">
+                        <span className="text-neutral-900 font-bold uppercase tracking-wider">Blog Metadata</span>
+                        <span>—</span>
+                        <span>CMS editor</span>
+                    </div>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-200 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Blog Title</label>
+                        <input 
+                            type="text" 
+                            value={blogTitle} 
+                            onChange={(e) => setBlogTitle(e.target.value)}
+                            className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm text-neutral-900 focus:outline-none focus:border-black transition-colors"
+                        />
+                        <span className="text-[11px] text-neutral-400">blogs.title</span>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Blog Subtitle</label>
+                        <input 
+                            type="text" 
+                            value={blogSubtitle} 
+                            onChange={(e) => setBlogSubtitle(e.target.value)}
+                            className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm text-neutral-900 focus:outline-none focus:border-black transition-colors"
+                        />
+                        <span className="text-[11px] text-neutral-400">blogs.subtitle</span>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Category</label>
+                        <select 
+                            value={blogCategory}
+                            onChange={(e) => setBlogCategory(e.target.value)}
+                            className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm text-neutral-900 bg-white focus:outline-none focus:border-black transition-colors cursor-pointer"
+                        >
+                            <option value="Public">Public</option>
+                            <option value="Investors">Investors</option>
+                            <option value="Regulators">Regulators</option>
+                        </select>
+                        <span className="text-[11px] text-neutral-400">blogs.category</span>
+                    </div>
+                </div>
+            </div>
+
             {/* Author Section */}
             <div>
                 <div className="flex items-center justify-between mb-4 text-xs font-mono text-neutral-400">
@@ -424,6 +510,70 @@ Logs attached below for investors and regulators. Raw CSV included.`
                             </div>
                         ))}
                     </div>
+                </div>
+            </div>
+
+            {/* Publish Button Section */}
+            <div className="pt-2 flex justify-end">
+                <button
+                    type="button"
+                    onClick={handlePublish}
+                    className="px-8 py-3 bg-black hover:bg-neutral-800 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors cursor-pointer shadow-sm"
+                >
+                    Publish
+                </button>
+            </div>
+
+            {/* Published Blogs Section */}
+            <div className="pt-8 border-t border-neutral-200">
+                <div className="flex items-center justify-between mb-4 text-xs font-mono text-neutral-400">
+                    <div className="flex items-center gap-2">
+                        <span className="text-neutral-900 font-bold uppercase tracking-wider">Published Blogs</span>
+                        <span>—</span>
+                        <span>management list</span>
+                    </div>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-200 space-y-4">
+                    {publishedBlogs.length === 0 ? (
+                        <div className="py-12 border border-dashed border-neutral-300 rounded-xl flex items-center justify-center text-xs text-neutral-400 font-mono">
+                            no blogs posted yet
+                        </div>
+                    ) : (
+                        <div className="space-y-3">
+                            {publishedBlogs.map((blog) => (
+                                <div key={blog.id} className="flex flex-col sm:flex-row sm:items-center justify-between border border-neutral-200 rounded-xl p-4 bg-white gap-4 shadow-xs">
+                                    <div className="space-y-1">
+                                        <div className="flex items-center gap-2">
+                                            <h4 className="text-sm font-bold text-neutral-900">{blog.title}</h4>
+                                            {blog.category && (
+                                                <span className="px-2 py-0.5 bg-neutral-100 text-neutral-600 border border-neutral-200 text-[10px] font-semibold rounded-md">
+                                                    {blog.category}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="text-xs text-neutral-500">{blog.subtitle}</p>
+                                    </div>
+                                    <div className="flex items-center gap-2 shrink-0">
+                                        <button
+                                            type="button"
+                                            onClick={() => handleEditBlog(blog)}
+                                            className="px-4 py-2 bg-neutral-200 hover:bg-neutral-300 text-neutral-800 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleDeleteBlog(blog.id)}
+                                            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 
